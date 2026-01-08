@@ -1,5 +1,9 @@
 ﻿# 🛰️ Satellite Mineral Prospector: İleri Seviye Uzaktan Algılama ve Jeolojik Keşif Platformu
 
+<div align="center">
+  <img src="assets/banner.png" alt="Satellite Mineral Prospector Banner" width="100%">
+</div>
+
 > **Masterclass Edisyonu**: Yeni Nesil Jeolojik Keşifler ve Uydu Tabanlı Maden Arama Simülasyonu.
 
 <div align="center">
@@ -169,6 +173,7 @@ Sadece kod yazmayı değil, karmaşık problemleri zarif, ölçeklenebilir ve s�
 
 ---
 *© 2026 Anka Silicon Dynamics. Tüm Hakları Saklıdır. Bu yazılım, insanlığın bilimsel ilerlemesine katkı sağlamak amacıyla açık kaynak olarak sunulmuştur.*
+
 
 
 
