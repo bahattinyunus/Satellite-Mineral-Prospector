@@ -48,3 +48,28 @@ def ndvi(nir_band: np.ndarray, red_band: np.ndarray) -> np.ndarray:
     Sentinel-2: (B8 - B4) / (B8 + B4)
     """
     return normalized_difference(nir_band, red_band)
+
+def ndwi(green_band: np.ndarray, nir_band: np.ndarray) -> np.ndarray:
+    """
+    Normalized Difference Water Index.
+    Used to monitor changes related to water content in water bodies.
+    Sentinel-2: (B3 - B8) / (B3 + B8)
+    """
+    return normalized_difference(green_band, nir_band)
+
+def lithium_index(swir1_band: np.ndarray, swir2_band: np.ndarray, blue_band: np.ndarray) -> np.ndarray:
+    """
+    Experimental Lithium Index for brine/pegmatite detection.
+    (SWIR1 / SWIR2) * (Blue) approximation.
+    """
+    # Simplified approximation for pegmatite/brine contrast
+    ratio = calculate_index(swir1_band, swir2_band)
+    return ratio * blue_band
+
+def gossan_index(swir1_band: np.ndarray, red_band: np.ndarray) -> np.ndarray:
+    """
+    Gossan Detection Index.
+    Identifies weathered rock containing iron oxides (often above sulfide deposits).
+    Sentinel-2: B11 / B4
+    """
+    return calculate_index(swir1_band, red_band)

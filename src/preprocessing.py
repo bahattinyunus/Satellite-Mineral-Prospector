@@ -1,5 +1,5 @@
 import numpy as np
-from src.indices import ndvi
+from src.indices import ndvi, ndwi
 
 def create_vegetation_mask(nir_band: np.ndarray, red_band: np.ndarray, threshold: float = 0.3) -> np.ndarray:
     """
@@ -17,13 +17,31 @@ def create_vegetation_mask(nir_band: np.ndarray, red_band: np.ndarray, threshold
     ndvi_val = ndvi(nir_band, red_band)
     return ndvi_val > threshold
 
-def mask_water(blue_band: np.ndarray, nir_band: np.ndarray, threshold: float = 1.0) -> np.ndarray:
-     """
-     Simple water masking. (Typically Water has low reflectance in NIR compared to Blue/Green, 
-     but NDWI is better. Let's use a placeholder simple logic or NDWI if needed).
-     For now, we will stick to a placeholder that returns False (no mask) unless requested.
-     """
-     return np.zeros_like(blue_band, dtype=bool)
+def mask_water(green_band: np.ndarray, nir_band: np.ndarray, threshold: float = 0.0) -> np.ndarray:
+    """
+    Creates a boolean mask for water using NDWI.
+    Args:
+        green_band (np.ndarray): Green band (B03 in Sentinel-2).
+        nir_band (np.ndarray): NIR band (B08 in Sentinel-2).
+        threshold (float): NDWI threshold (default 0.0 for deep water).
+    Returns:
+        np.ndarray: Boolean mask where True is water.
+    """
+    ndwi_val = ndwi(green_band, nir_band)
+    return ndwi_val > threshold
+
+def apply_auto_contrast(data: np.ndarray, lower_percentile: float = 2, upper_percentile: float = 98) -> np.ndarray:
+    """
+    Applies simple percentile-based contrast stretching.
+    """
+    non_nan = data[~np.isnan(data)]
+    if non_nan.size == 0:
+        return data
+    
+    p_low, p_high = np.percentile(non_nan, [lower_percentile, upper_percentile])
+    stretched = np.clip(data, p_low, p_high)
+    # Normalize to 0-1
+    return (stretched - p_low) / (p_high - p_low + 1e-6)
 
 def clean_data(band_data: np.ndarray, mask: np.ndarray, fill_value: float = np.nan) -> np.ndarray:
     """

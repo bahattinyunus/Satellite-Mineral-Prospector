@@ -28,6 +28,12 @@ def create_dummy_raster(path: str, mean_val: float, size: int = 100):
         data[10:30, 10:30] += 0.8
     if 'B04' in path: # Red low
         data[10:30, 10:30] -= 0.5
+    
+    # Add a "water" patch
+    if 'B03' in path: # Green high
+        data[70:90, 10:30] += 0.4
+    if 'B08' in path: # NIR low
+        data[70:90, 10:30] -= 0.6
         
     transform = from_origin(300000, 4000000, 10, 10) # Dummy coords
     
@@ -47,6 +53,7 @@ def main():
     # Create dummy bands
     bands_config = {
         'B02': 0.3, # Blue
+        'B03': 0.4, # Green
         'B04': 0.3, # Red
         'B08': 0.4, # NIR
         'B11': 0.2, # SWIR1
@@ -59,8 +66,8 @@ def main():
         create_dummy_raster(p, mean)
         paths[band] = p
         
-    print("⚙️  Running Analysis Pipeline...")
-    results = analyze_scene(paths, mask_vegetation=True)
+    print("⚙️  Running Analysis Pipeline (Veg & Water Masking enabled)...")
+    results = analyze_scene(paths, mask_vegetation=True, mask_water_bodies=True)
     
     output = 'examples/demo_output.png'
     plot_results(results, output_path=output)
