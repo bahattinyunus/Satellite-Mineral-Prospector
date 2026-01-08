@@ -3,6 +3,7 @@ from typing import Dict, List
 from src.io import read_band
 from src.indices import iron_oxide, clay_minerals, ferrous_minerals, ndvi, lithium_index, gossan_index
 from src.preprocessing import create_vegetation_mask, mask_water, clean_data, apply_auto_contrast
+from src.ai_classifier import detect_spectral_anomalies
 
 def analyze_scene(band_paths: Dict[str, str], mask_vegetation: bool = True, mask_water_bodies: bool = True) -> Dict[str, np.ndarray]:
     """
@@ -64,5 +65,9 @@ def analyze_scene(band_paths: Dict[str, str], mask_vegetation: bool = True, mask
     for name, data in index_maps.items():
         cleaned = clean_data(data, combined_mask)
         results[name] = apply_auto_contrast(cleaned)
+    
+    # AI Anomaly Detection
+    print("🤖 Running AI Anomaly Detection...")
+    results['ai_anomalies'] = detect_spectral_anomalies(results)
         
     return results
