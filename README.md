@@ -170,3 +170,4 @@ Sadece kod yazmayı değil, karmaşık problemleri zarif, ölçeklenebilir ve s�
 ---
 *© 2026 Anka Silicon Dynamics. Tüm Hakları Saklıdır. Bu yazılım, insanlığın bilimsel ilerlemesine katkı sağlamak amacıyla açık kaynak olarak sunulmuştur.*
 
+
